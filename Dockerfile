@@ -3,7 +3,7 @@ FROM jlesage/baseimage-gui:debian-10-v4
 
 ENV USER_ID=0 GROUP_ID=0 TERM=xterm
 
-ENV MEDIATHEK_VERSION=14.1.0
+ENV MEDIATHEK_VERSION=latest
 
 # Refresh apt cache
 RUN apt-get update \
@@ -46,12 +46,7 @@ LABEL \
       org.label-schema.vcs-url="https://github.com/conrad784/docker-mediathekview-webinterface" \
       org.label-schema.schema-version="1.0"
 
-# Define software download URLs.
-ARG MEDIATHEKVIEW_URL=https://download.mediathekview.de/stabil/MediathekView-$MEDIATHEK_VERSION-linux.tar.gz
-
-# download Mediathekview
-RUN mkdir -p /opt/MediathekView
-RUN wget -q ${MEDIATHEKVIEW_URL} -O MediathekView.tar.gz
-RUN tar xf MediathekView.tar.gz -C /opt
-
 COPY src/startapp.sh /startapp.sh
+RUN chmod +x /startapp.sh
+
+ENTRYPOINT ["/startapp.sh"]
